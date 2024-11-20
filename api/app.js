@@ -19,6 +19,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use((req, res, next) => {
+  console.log("ben app.js te tanımlanan bir middleware'im")
+  next();
+});
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
