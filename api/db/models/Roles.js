@@ -18,7 +18,7 @@ const schema = mongoose.Schema({
 
 class Roles extends mongoose.Model{
 
-    async remove(query){
+    async deleteOne(query){
     if(query._id){
         await RolePrivileges.deleteOne({role_id:query._id});
     }

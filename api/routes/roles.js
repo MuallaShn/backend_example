@@ -28,7 +28,7 @@ router.post("/add" ,async (req, res) => {
 
         if(!body.role_name) throw new CustomError(Enum.HTTP_CODES.BAD_REQUEST, "Validation Error!", "role_name field must be filled");
 
-        if(!body.permissions || Array.isArray(body.permissions) || body.permissions.length ==0){
+        if(!body.permissions || !Array.isArray(body.permissions) || body.permissions.length == 0){
             throw new CustomError(Enum.HTTP_CODES.BAD_REQUEST, "Validation Error!", "permissions field must be an Array");
         }
         let role = new Roles({
@@ -41,7 +41,7 @@ router.post("/add" ,async (req, res) => {
 
         for(let i=0; i<body.permissions.length;i++){
             let priv = new RolePrivileges({
-                role_id: role_id,
+                role_id: role._id,
                 permission: body.permissions[i],
                 created_by: req.user?.id
             });
@@ -69,7 +69,7 @@ router.post("/update" ,async (req, res) => {
         if(body.role_name) updates.role_name=body.role_name;
         if(typeof body.is_active == "boolean") updates.is_active=body.is_active;
 
-        if(!body.permissions && Array.isArray(body.permissions) && body.permissions.length > 0){
+        if(body.permissions && Array.isArray(body.permissions) && body.permissions.length > 0){
 
             let permissions= await RolePrivileges.find({role_id:body._id});
 
