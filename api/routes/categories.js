@@ -6,6 +6,7 @@ const CustomError =require("../lib/Error")
 const Enum = require("../config/Enum")
 const AuditLogs = require("../lib/AuditLogs");
 const logger = require("../lib/logger/LoggerClass");
+const auth = require("../lib/auth")();
 /**
 CRUD:
 *Create
@@ -21,6 +22,10 @@ CRUD:
 
 
 */
+
+router.all("*", auth.authenticate(), (res,req,next) => {
+    next();
+})
 /*GET users listing */
 router.get('/', async (req,res,next) => {
     try{
