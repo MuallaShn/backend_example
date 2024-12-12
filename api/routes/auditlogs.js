@@ -10,7 +10,7 @@ router.all("*", auth.authenticate(), (res,req,next) => {
 })
 
 
-router.post("/", async (req,res) => {
+router.post("/", auth.checkRoles("auditlogs_view") ,async (req,res) => {
     try{
         let body=req.body;
         let query={};
@@ -41,7 +41,7 @@ router.post("/", async (req,res) => {
         res.json(Response.successResponse(auditLogs));
 
     }catch(err){
-        let errorResponse =Response.errorResponse(err);
+        let errorResponse =Response.errorResponse(err, req.user?.language);
     res.status(errorResponse.code).json(errorResponse);
     }
 })
